@@ -43,18 +43,18 @@ int run_command(char *val)
 
     char *token;
     char *delim = " ";
-    char *command;
+    char *cmnd;
 
-    char *argv[] = {"/bin/ls", NULL};
+    char *argv[] = {"/bin/", NULL};
 
     //  Tokenize the passed in arguments
-    // token = strtok(val, delim);
+    token = strtok(val, delim);
 
-    // command = malloc(sizeof(char) * strlen(argv[0]));
+    cmnd = malloc(sizeof(char) * strlen(argv[0]));
 
-    // strcpy(command, argv[0]);
-    // strcat(command, token);
-    // argv[0] = command;
+    strcpy(cmnd, argv[0]);
+    strcat(cmnd, token);
+    argv[0] = cmnd;
     
     //  We create a child process to prevent our existing process from being overwritten after 
     //  execve runs
@@ -69,6 +69,8 @@ int run_command(char *val)
     if (pid == 0)
     {
         int v = execve(argv[0], argv, NULL);
+
+        printf("v: %d\n", v);
 
         if(v == -1)
         {

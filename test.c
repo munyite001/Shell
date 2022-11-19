@@ -57,6 +57,13 @@ int run_command(char *val)
     strcat(command, token);
     argv[0] = command;
 
+    int n = sizeof(argv)/sizeof(char *);
+
+    for(int i = 0; i < n; i++)
+    {
+        printf("argument %s\n", argv[i]);
+    }
+
     // for(int i = 1; token != NULL; i++)
     // {
     //     argv[i] = token;
@@ -95,7 +102,7 @@ int run_command(char *val)
 
 int main(void)
 {
-    char *command = "ls";
+    char *command = "pwd";
     run_command(command);
     return(0);
 }
