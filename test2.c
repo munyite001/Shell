@@ -4,10 +4,8 @@
 
 int main(void)
 {
-   char *argv[] = {"/bin/ls", NULL};
-    int n = sizeof(argv)/sizeof(char *);
-    printf("%lu\n", sizeof(argv)/sizeof(char *));
-    argv[n] = "Test";
-    printf("%s\n", argv[n]);
-    printf("%lu\n", sizeof(argv)/sizeof(char *));
+   char val[] = "ls";
+   int v = strcmp("ls", val);
+   printf("The value is: %d\n", v);
+   return(0);
 }
