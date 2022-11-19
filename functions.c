@@ -52,8 +52,8 @@ int run_command(char *val)
 
     command = malloc(strlen(argv[0]) + strlen(val));
     strcpy(command, argv[0]);
-    strcat(command, token); //  TO fix get rid of new line character
-    argv[0] = strtok(command, '\n');
+    strcat(command, token); 
+    argv[0] = strtok(command, "\n");    //  TO fix get rid of new line character
 
             /*Debug*/
     // printf("%s\n", argv[0]);
