@@ -13,7 +13,7 @@ int shell_run()
 
     size_t n = 0;
     char *buffer = NULL;
-    int v;
+    int v;  // To store value of comparison to determine if we exit
 
     while(true)
     {
@@ -44,27 +44,37 @@ int run_command(char *val)
     char *token;
     char *delim = " ";
     char *command;
+    char *str = malloc(sizeof(char) * strlen(val));
+
+    strcpy(str, val);
+
+    int size = countSpaces(str);    //  To calculate size of argv[] array
+    int i = 0;  //  To count extra arguments passed in to the command
+
+    char *argv[size];       // Creating the argv array
+
+
+    // while(token != NULL)
+    // {
+    //     token = strtok(NULL, delim);
+    //     i += 1;
+    //     argv[i] = token;
+    // }
+
+    //argv[size-1] = NULL;
 
     char *argv[] = {"/bin/", NULL};
 
     //  Tokenize the passed in arguments
-    token = strtok(val, delim);
+    token = strtok(str, delim);
 
-    command = malloc(strlen(argv[0]) + strlen(val));
-    strcpy(command, argv[0]);
-    strcat(command, token); 
-    argv[0] = strtok(command, "\n");    //  TO fix get rid of new line character
-
-            /*Debug*/
-    // printf("%s\n", argv[0]);
-    // printf("Size: %lu\n", sizeof(argv[0]));
-    // printf("comparison: %d\n", strcmp("ls", token));
-    // printf("size of token: %lu\n", strlen(token));
-
+    argv[0] = filenameFormat(token);
+    
     //  We create a child process to prevent our existing process from being overwritten after 
     //  execve runs
     pid = fork();
 
+    //  If there was an issue with creating the child process
     if (pid == -1)
     {
         perror("Error");
@@ -75,12 +85,10 @@ int run_command(char *val)
     {
         int v = execve(argv[0], argv, NULL);
 
-        printf("v: %d\n", v);
-
         if(v == -1)
         {
-            printf("Undefined command: %s", argv[0]);
-            return(-1);
+            perror("Undefined");
+            exit(0);
         }
     }
     else
@@ -103,18 +111,17 @@ int countSpaces(char *str)
         }
     }
 
-    return(count+1);
+    return(count+2);    //  1 for num of elemets, 1 for null value at the end of array
 }
 
 //  Function to format filename
 char *filenameFormat(char *t)
 {
     char *command;
-
     command = malloc(5 + strlen(t));
 
     strcpy(command, "/bin/");
     strcat(command, t);
 
-    return (command);
+    return(strtok(command, "\n"));
 }
