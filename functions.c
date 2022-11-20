@@ -48,27 +48,25 @@ int run_command(char *val)
 
     strcpy(str, val);
 
-    int size = countSpaces(str);    //  To calculate size of argv[] array
-    int i = 0;  //  To count extra arguments passed in to the command
+    int size = countSpaces(str);    //  To calculate size of argv array
 
     char *argv[size];       // Creating the argv array
-
-
-    // while(token != NULL)
-    // {
-    //     token = strtok(NULL, delim);
-    //     i += 1;
-    //     argv[i] = token;
-    // }
-
-    //argv[size-1] = NULL;
-
-    char *argv[] = {"/bin/", NULL};
 
     //  Tokenize the passed in arguments
     token = strtok(str, delim);
 
     argv[0] = filenameFormat(token);
+
+    int i = 0;  //  To count extra arguments passed in to the command
+    
+    while(token != NULL)
+    {
+        token = strtok(NULL, delim);
+        i += 1;
+        argv[i] = token;
+    }
+
+    argv[size-1] = NULL;
     
     //  We create a child process to prevent our existing process from being overwritten after 
     //  execve runs

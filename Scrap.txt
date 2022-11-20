@@ -1,9 +1,56 @@
-char *argv[] = {"/bin/", NULL};
+pid_t pid;
+
+    char *token;
+    char *delim = " ";
+    char *command;
+    char *str = malloc(sizeof(char) * strlen(val));
+
+    strcpy(str, val);
+
+    int size = countSpaces(str);    //  To calculate size of argv array
+
+    char **argv;       // Creating the argv array
 
     //  Tokenize the passed in arguments
-    token = strtok(val, delim);
+    token = strtok(str, delim);
 
-    command = malloc(strlen(argv[0]) + strlen(val));
-    strcpy(command, argv[0]);
-    strcat(command, token); 
-    argv[0] = strtok(command, "\n");    //  TO fix get rid of new line character
+    argv[0] = filenameFormat(token);
+
+    int i = 0;  //  To count extra arguments passed in to the command
+    
+    while(token != NULL)
+    {
+        token = strtok(NULL, delim);
+        i += 1;
+        argv[i] = token;
+    }
+
+    argv[size-1] = NULL;
+    
+    //  We create a child process to prevent our existing process from being overwritten after 
+    //  execve runs
+    pid = fork();
+
+    //  If there was an issue with creating the child process
+    if (pid == -1)
+    {
+        perror("Error");
+        return(-1);
+    }
+
+    if (pid == 0)
+    {
+        int v = execve(argv[0], argv, NULL);
+
+        if(v == -1)
+        {
+            perror("Undefined");
+            exit(0);
+        }
+    }
+    else
+    {
+        wait(NULL);
+    }
+
+    return (0);

@@ -1,14 +1,20 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "main.h"
 
 int main(void)
 {
-    char *t = "ls";
-    char *command;
-    command = malloc(5 + strlen(t));
-    strcpy(command, "/bin/");
-    strcat(command, t);
+    char *command = "ls";
+    int size = countSpaces(command);
+    if (size == 2)
+    {
+        printf("Matches\n");
+    }
+    else
+    {
+        printf("Doesn't match\n");
+    }
 
-    return (command);
+    printf("Size: %d\n", size);
 }

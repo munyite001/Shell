@@ -14,26 +14,31 @@ int main(void)
 
    strcpy(str, val);
 
-   int size = countSpaces(val);
+   int size = countSpaces(str);
 
-   token = strtok(str, delim);
    char *argv[size];
 
+   token = strtok(str, delim);
+
    char *temp = token;
+
    argv[0] = filenameFormat(temp);
 
-   int i = 0;
+   
+   int i = 1;
 
    while(token != NULL)
    {
       token = strtok(NULL, delim);
-      i += 1;
       argv[i] = token;
+      i += 1;
    }
-
    argv[size-1] = NULL;
 
-   execve(argv[0], argv, NULL);
+   for(int i = 0; i < size; i++)
+   {
+      printf("Argument[%d]: %s\n", i+1, argv[i]);
+   }
 
    return(0);
 }
