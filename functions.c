@@ -90,3 +90,31 @@ int run_command(char *val)
 
     return (0);
 }
+
+//  Function to count number of spaces
+int countSpaces(char *str)
+{
+    int count;
+    for(int i = 0; i < strlen(str); i++)
+    {
+        if(str[i] == ' ')
+        {
+            count += 1;
+        }
+    }
+
+    return(count+1);
+}
+
+//  Function to format filename
+char *filenameFormat(char *t)
+{
+    char *command;
+
+    command = malloc(5 + strlen(t));
+
+    strcpy(command, "/bin/");
+    strcat(command, t);
+
+    return (command);
+}
