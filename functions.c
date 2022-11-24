@@ -50,24 +50,34 @@ int run_command(char *val)
 
     int size = countSpaces(str);    //  To calculate size of argv array
 
-    char *argv[size];       // Creating the argv array
+    char **argv;       // Creating the argv array
 
     //  Tokenize the passed in arguments
     token = strtok(str, delim);
 
-    argv[0] = filenameFormat(token);
+    char *temp = malloc(sizeof(char) * strlen(token));
 
-    int i = 0;  //  To count extra arguments passed in to the command
+    strcpy(temp, token);
     
-    while(token != NULL)
+    for(int i = 0; i < 3; i++)
     {
-        token = strtok(NULL, delim);
-        i += 1;
         argv[i] = token;
+        token = strtok(NULL, delim);
     }
-
     argv[size-1] = NULL;
-    
+    argv[0] = filenameFormat(temp);
+
+    //get rid of newline characters at end of each extra argument
+    for(int i = 1; i < size; i++)
+    {
+        argv[i] = strtok(argv[i], "\n");
+    }
+    // strtok(argv[1], "\n");
+    // for(int i = 0; i < 3; i++)
+    // {
+    //     printf("Argument[%d]: %s\n", i+1, argv[i]);
+    // }
+
     //  We create a child process to prevent our existing process from being overwritten after 
     //  execve runs
     pid = fork();
